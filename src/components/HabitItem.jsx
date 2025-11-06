@@ -22,7 +22,7 @@ const HabitItem = ({ habit, toggleHabitComplete, handleDeleteHabit }) => {
           Delete
         </button>
         <button
-          onClick={() => toggleHabitComplete(habit.id)}
+          onClick={() => toggleHabitComplete(habit.id, habit.completed)}
           className="ml-2 text-green-500 hover:text-green-700"
         >
           {habit.completed ? "❌ Cancel" : "✅ Ready"}

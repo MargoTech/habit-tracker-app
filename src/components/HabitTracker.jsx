@@ -8,6 +8,7 @@ import {
   doc,
   updateDoc,
   onSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
@@ -16,15 +17,27 @@ const HabitTracker = () => {
 
   const [habits, setHabits] = useState([]);
   const [habitTitle, setHabitTitle] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(habitsCollection, (snapshot) => {
-      const firebaseHabits = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setHabits(firebaseHabits);
-    });
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      habitsCollection,
+      (snapshot) => {
+        const firebaseHabits = snapshot.docs.map((docSnapshot) => ({
+          id: docSnapshot.id,
+          ...docSnapshot.data(),
+        }));
+        setHabits(firebaseHabits);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Snapshot error:", err);
+        setError(err);
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
