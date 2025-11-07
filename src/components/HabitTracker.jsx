@@ -49,18 +49,39 @@ const HabitTracker = () => {
       await addDoc(habitsCollection, {
         title: habitTitle,
         completed: false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
       setHabitTitle("");
     } catch (error) {
       console.error("Error adding document: ", error);
+      setError(error);
     }
   };
 
-  const toggleHabitComplete = async (id, currentStatus) => {
-    const habitRef = doc(db, "habits", id);
-    await updateDoc(habitRef, {
-      completed: !currentStatus,
-    });
+  const toggleHabitComplete = async (id) => {
+    const habit = habits.find((h) => h.id === id);
+    if (!habit) return;
+
+    const newStatus = !habit.completed;
+    const prevHabits = habits;
+
+    setHabits((prev) =>
+      prev.map((h) => (h.id === id ? { ...h, completed: newStatus } : h))
+    );
+
+    try {
+      const habitRef = doc(db, "habits", id);
+      await updateDoc(habitRef, {
+        completed: newStatus,
+        updateAt: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error("Error updating document:", error);
+      setError(error);
+
+      setHabits(prevHabits);
+    }
   };
 
   const handleDeleteHabit = async (id) => {
@@ -86,22 +107,37 @@ const HabitTracker = () => {
         handleAddHabit={handleAddHabit}
       />
 
-      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-md overflow-hidden mt-2">
-        <div
-          className="bg-blue-500 dark:bg-blue-700 h-4 transition-all"
-          style={{ width: `${(completedCount / (habits.length || 1)) * 100}%` }}
-        ></div>
+      <div className="w-full max-w-lg mt-4">
+        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-md overflow-hidden">
+          <div
+            className="bg-blue-500 dark:bg-blue-700 h-4 transition-all"
+            style={{
+              width: `${(completedCount / (habits.length || 1)) * 100}%`,
+            }}
+          />
+        </div>
+
+        <p className="mt-2 text-gray-800 dark:text-gray-300">
+          Completed {completedCount} from {habits.length}
+        </p>
+
+        {loading && (
+          <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
+            Loading...
+          </p>
+        )}
+        {error && (
+          <p className="text-sm text-red-600 mt-2">
+            An error occurred. Check console for details.
+          </p>
+        )}
+
+        <HabitList
+          habits={habits}
+          toggleHabitComplete={toggleHabitComplete}
+          handleDeleteHabit={handleDeleteHabit}
+        />
       </div>
-
-      <p className="mt-2 text-gray-800 dark:text-gray-300">
-        Completed {completedCount} from {habits.length}
-      </p>
-
-      <HabitList
-        habits={habits}
-        toggleHabitComplete={toggleHabitComplete}
-        handleDeleteHabit={handleDeleteHabit}
-      />
     </div>
   );
 };
