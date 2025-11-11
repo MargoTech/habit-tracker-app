@@ -4,12 +4,24 @@ A minimal and intuitive habit tracking app built with React. Set your goals, bui
 
 ## 🚀 Features
 
-- ➕ Add and manage daily/weekly habits
-- 🗓 Track progress with checkmarks or status
-- 📊 Habit completion stats (streaks, totals)
-- 📝 Optional habit descriptions or notes
-- 💾 Data saved with LocalStorage or Firebase
-- 📱 Fully responsive design for desktop & mobile
+- ➕ **Add and manage habits** — create, mark as completed, and delete habits  
+- 🗓 **Track progress** — visual progress bar shows your daily completion rate  
+- 📊 **Completion stats** — track how many habits you’ve finished  
+- 🌗 **Dark / Light mode** — theme persists via LocalStorage  
+- 💾 **Realtime data sync** — powered by Firebase Firestore  
+- 🌀 **Smooth animations** — via Framer Motion  
+- 📱 **Fully responsive design** — works perfectly on desktop & mobile  
+
+---
+
+### 🧩 Planned Enhancements
+
+- 🧮 **Streak counter** — track consecutive completion days  
+- 📝 **Habit descriptions or notes** — add more context to each habit  
+- 📊 **Advanced analytics** — charts and visualizations with Recharts  
+- 👤 **User accounts** — sign-in with Firebase Auth  
+- 🔔 **Reminders / Notifications** — daily habit reminders  
+- 🧠 **Context API or useReducer** — global state management
 
 ## 🛠 Tech Stack
 
