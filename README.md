@@ -25,11 +25,13 @@ A minimal and intuitive habit tracking app built with React. Set your goals, bui
 - Framer Motion
 - Local Storage
 
+---
 
 ## 🔗 Live Demo
 
 👉 [Live](https://687e253d61c00d00703779c6--habitrtacker.netlify.app/)
 
+---
 
 ### 🧩 Planned Enhancements
 
