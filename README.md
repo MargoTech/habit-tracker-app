@@ -14,15 +14,6 @@ A minimal and intuitive habit tracking app built with React. Set your goals, bui
 
 ---
 
-### 🧩 Planned Enhancements
-
-- 🧮 **Streak counter** — track consecutive completion days  
-- 📝 **Habit descriptions or notes** — add more context to each habit  
-- 📊 **Advanced analytics** — charts and visualizations with Recharts  
-- 👤 **User accounts** — sign-in with Firebase Auth  
-- 🔔 **Reminders / Notifications** — daily habit reminders  
-- 🧠 **Context API or useReducer** — global state management
-
 ## 🛠 Tech Stack
 
 - React + Vite
@@ -39,3 +30,12 @@ A minimal and intuitive habit tracking app built with React. Set your goals, bui
 
 👉 [Live](https://687e253d61c00d00703779c6--habitrtacker.netlify.app/)
 
+
+### 🧩 Planned Enhancements
+
+- 🧮 **Streak counter** — track consecutive completion days  
+- 📝 **Habit descriptions or notes** — add more context to each habit  
+- 📊 **Advanced analytics** — charts and visualizations with Recharts  
+- 👤 **User accounts** — sign-in with Firebase Auth  
+- 🔔 **Reminders / Notifications** — daily habit reminders  
+- 🧠 **Context API or useReducer** — global state management
