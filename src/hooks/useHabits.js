@@ -12,18 +12,19 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-const HabitTracker = () => {
-  const habitsCollection = collection(db, "habits");
-
+export const useHabits = () => {
   const [habits, setHabits] = useState([]);
-  const [habitTitle, setHabitTitle] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const habitsCollection = collection(db, "habits");
+
   useEffect(() => {
     setLoading(true);
+    const q = query(habitsCollection, orderBy("createdAt", "desc"));
+    
     const unsubscribe = onSnapshot(
-      habitsCollection,
+      q,
       (snapshot) => {
         const firebaseHabits = snapshot.docs.map((docSnapshot) => ({
           id: docSnapshot.id,
@@ -42,29 +43,28 @@ const HabitTracker = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleAddHabit = async () => {
-    if (!habitTitle.trim()) return;
+  const addHabit = useCallback(async (title) => {
+    if (!title.trim()) return;
 
     try {
       await addDoc(habitsCollection, {
-        title: habitTitle,
+        title: title.trim(),
         completed: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      setHabitTitle("");
     } catch (error) {
       console.error("Error adding document: ", error);
       setError(error);
     }
   };
 
-  const toggleHabitComplete = async (id) => {
+  const toggleHabit = useCallback(async (id) => {
     const habit = habits.find((h) => h.id === id);
     if (!habit) return;
 
     const newStatus = !habit.completed;
-    const prevHabits = habits;
+    const prevHabits = [...habits];
 
     setHabits((prev) =>
       prev.map((h) => (h.id === id ? { ...h, completed: newStatus } : h))
@@ -78,15 +78,31 @@ const HabitTracker = () => {
       });
     } catch (error) {
       console.error("Error updating document:", error);
-      setError(error);
-
       setHabits(prevHabits);
+      setError(error);
     }
-  };
+  }, [habits]);
 
-  const handleDeleteHabit = async (id) => {
-    const habitRef = doc(db, "habits", id);
-    await deleteDoc(habitRef);
-  };
+  const deleteHabit = useCallback(async (id) => {
+    const prevHabits = [...habits];
+    setHabits((prev) => prev.filter((h) => h.id !== id));
 
-  const completedCount = habits.filter((habit) => habit.completed).length;
+   try {
+      const habitRef = doc(db, "habits", id);
+      await deleteDoc(habitRef);
+    } catch (err) {
+      console.error("Error deleting habit:", err);
+      setHabits(prevHabits);
+      setError(err);
+    }  
+}, [habits]);
+
+  return {
+    habits,
+    loading,
+    error,
+    addHabit,
+    toggleHabit,
+    deleteHabit,
+  };
+};
