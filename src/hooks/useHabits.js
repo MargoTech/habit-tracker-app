@@ -22,7 +22,7 @@ export const useHabits = () => {
   useEffect(() => {
     setLoading(true);
     const q = query(habitsCollection, orderBy("createdAt", "desc"));
-    
+
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
@@ -57,45 +57,51 @@ export const useHabits = () => {
       console.error("Error adding document: ", error);
       setError(error);
     }
-  };
+  }, []);
 
-  const toggleHabit = useCallback(async (id) => {
-    const habit = habits.find((h) => h.id === id);
-    if (!habit) return;
+  const toggleHabit = useCallback(
+    async (id) => {
+      const habit = habits.find((h) => h.id === id);
+      if (!habit) return;
 
-    const newStatus = !habit.completed;
-    const prevHabits = [...habits];
+      const newStatus = !habit.completed;
+      const prevHabits = [...habits];
 
-    setHabits((prev) =>
-      prev.map((h) => (h.id === id ? { ...h, completed: newStatus } : h))
-    );
+      setHabits((prev) =>
+        prev.map((h) => (h.id === id ? { ...h, completed: newStatus } : h))
+      );
 
-    try {
-      const habitRef = doc(db, "habits", id);
-      await updateDoc(habitRef, {
-        completed: newStatus,
-        updateAt: serverTimestamp(),
-      });
-    } catch (error) {
-      console.error("Error updating document:", error);
-      setHabits(prevHabits);
-      setError(error);
-    }
-  }, [habits]);
+      try {
+        const habitRef = doc(db, "habits", id);
+        await updateDoc(habitRef, {
+          completed: newStatus,
+          updatedAt: serverTimestamp(),
+        });
+      } catch (error) {
+        console.error("Error updating document:", error);
+        setHabits(prevHabits);
+        setError(error);
+      }
+    },
+    [habits]
+  );
 
-  const deleteHabit = useCallback(async (id) => {
-    const prevHabits = [...habits];
-    setHabits((prev) => prev.filter((h) => h.id !== id));
+  const deleteHabit = useCallback(
+    async (id) => {
+      const prevHabits = [...habits];
+      setHabits((prev) => prev.filter((h) => h.id !== id));
 
-   try {
-      const habitRef = doc(db, "habits", id);
-      await deleteDoc(habitRef);
-    } catch (err) {
-      console.error("Error deleting habit:", err);
-      setHabits(prevHabits);
-      setError(err);
-    }  
-}, [habits]);
+      try {
+        const habitRef = doc(db, "habits", id);
+        await deleteDoc(habitRef);
+      } catch (err) {
+        console.error("Error deleting habit:", err);
+        setHabits(prevHabits);
+        setError(error);
+      }
+    },
+    [habits]
+  );
 
   return {
     habits,
