@@ -1,9 +1,18 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
-const HabitForm = ({ habitTitle, setHabitTitle, handleAddHabit }) => {
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleAddHabit();
+const HabitForm = ({ onAdd }) => {
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = () => {
+    if (!title.trim()) return;
+    onAdd(title);
+    setTitle("");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
     }
   };
 
