@@ -13,7 +13,6 @@ const HabitList = ({ habits, toggleHabitComplete, handleDeleteHabit }) => {
             transition={{ duration: 0.4 }}
           >
             <HabitItem
-              key={habit.id}
               habit={habit}
               toggleHabitComplete={toggleHabitComplete}
               handleDeleteHabit={handleDeleteHabit}

@@ -25,15 +25,15 @@ const HabitForm = ({ onAdd }) => {
     >
       <motion.input
         type="text"
-        value={habitTitle}
-        onChange={(e) => setHabitTitle(e.target.value)}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Add habit"
         className="border border-blue-500 p-2 rounded-md bg-gray-100 text-lg w-full mb-2"
         whileFocus={{ scale: 1.05 }}
       />
       <motion.button
-        onClick={handleAddHabit}
+        onClick={handleSubmit}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all"
