@@ -2,33 +2,34 @@ import { motion } from "framer-motion";
 
 const HabitItem = ({ habit, toggleHabitComplete, handleDeleteHabit }) => {
   return (
-    <motion.li
+    <motion.div
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3 }}
-      className="flex justify-between items-center p-2 mb-2 bg-white shadow-md rounded-md"
-      style={{
-        textDecoration: habit.completed ? "line-through" : "none",
-      }}
+      className={`flex justify-between items-center p-3 mb-2 rounded-md shadow-md 
+        bg-white dark:bg-gray-800 
+        ${habit.completed ? "opacity-60 line-through" : ""}`}
     >
-      <span>{habit.title}</span>
-      <div>
+      <span className="text-lg">{habit.title}</span>
+      <div className="flex gap-3">
+        <button
+          onClick={() => toggleHabitComplete(habit.id)}
+          className={`px-2 py-1 rounded text-white 
+            ${habit.completed ? "bg-yellow-500" : "bg-green-500"}
+            hover:opacity-80 transition`}
+        >
+          {habit.completed ? "Undo" : "Done"}
+        </button>
         <button
           onClick={() => handleDeleteHabit(habit.id)}
-          className="text-red-500 hover:text-red-700"
+          className="px-2 py-1 rounded bg-red-500 text-white hover:opacity-80 transition"
         >
           Delete
         </button>
-        <button
-          onClick={() => toggleHabitComplete(habit.id, habit.completed)}
-          className="ml-2 text-green-500 hover:text-green-700"
-        >
-          {habit.completed ? "❌ Cancel" : "✅ Ready"}
-        </button>
       </div>
-    </motion.li>
+    </motion.div>
   );
 };
 
