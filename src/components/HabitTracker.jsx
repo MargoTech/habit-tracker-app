@@ -38,6 +38,7 @@ const HabitTracker = () => {
           habits={habits}
           onToggle={toggleHabit}
           onDelete={deleteHabit}
+          loading={loading}
         />
       </div>
     </div>

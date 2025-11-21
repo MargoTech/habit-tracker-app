@@ -1,7 +1,20 @@
 import { motion, AnimatePresence } from "framer-motion";
 import HabitItem from "./HabitItem";
 
-const HabitList = ({ habits, onToggle, onDelete }) => {
+const HabitList = ({ habits, onToggle, onDelete, loading }) => {
+  if (loading) {
+    return (
+      <div className="mt-6 space-y-3">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="w-full h-10 bg-gray-300 dark:bg-gray-700 rounded-md animate-pulse"
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <ul className="mt-4 w-full max-w-lg">
       <AnimatePresence>
