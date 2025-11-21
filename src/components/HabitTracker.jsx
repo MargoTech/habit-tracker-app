@@ -10,7 +10,7 @@ const HabitTracker = () => {
     <div className="flex flex-col items-center justify-center py-10 min-h-screen">
       <h1 className="text-4xl font-semibold mb-6">Habit Tracker</h1>
 
-      <HabitForm handleAddHabit={addHabit} />
+      <HabitForm onAdd={addHabit} />
 
       <div className="w-full max-w-lg mt-4">
         <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-md overflow-hidden">
@@ -36,8 +36,8 @@ const HabitTracker = () => {
 
         <HabitList
           habits={habits}
-          toggleHabitComplete={toggleHabit}
-          handleDeleteHabit={deleteHabit}
+          onToggle={toggleHabit}
+          onDelete={deleteHabit}
         />
       </div>
     </div>
