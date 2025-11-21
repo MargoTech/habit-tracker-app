@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const HabitItem = ({ habit, toggleHabitComplete, handleDeleteHabit }) => {
@@ -33,4 +34,4 @@ const HabitItem = ({ habit, toggleHabitComplete, handleDeleteHabit }) => {
   );
 };
 
-export default HabitItem;
+export default memo(HabitItem);
