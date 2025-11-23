@@ -22,4 +22,37 @@ const habitStats = () => {
       return arr;
     }
   }, []);
+
+  const weeklyData = useMemo(() => {
+    const counts = days.map((d) => ({
+      date: d,
+      label: format(d, "EEE"),
+      count: 0,
+    }));
+
+    habits.forEach((habit) => {
+      if (Array.isArray(habit.completions) && habit.completions.length > 0) {
+        habit.completions.forEach((iso) => {
+          let dt;
+          try {
+            dt =
+              typeof iso === "string"
+                ? parseISO(iso)
+                : iso.toDate
+                ? iso.toDate()
+                : new Date(iso);
+          } catch {
+            dt = new Date(iso);
+          }
+          for (let i = 0; i < counts.length; i++) {
+            if (isSameDay(counts[i].date, dt)) {
+              counts[i].count += 1;
+              break;
+            }
+          }
+        });
+        return;
+      }
+    });
+  }, [habits, days]);
 };
