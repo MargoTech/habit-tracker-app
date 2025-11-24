@@ -1,5 +1,6 @@
 import HabitForm from "./HabitForm";
 import HabitList from "./HabitList";
+import HabitStats from "./HabitStats";
 import { useHabits } from "../hooks/useHabits";
 import { useCallback } from "react";
 
@@ -33,6 +34,10 @@ const HabitTracker = () => {
       <h1 className="text-4xl font-semibold mb-6">Habit Tracker</h1>
 
       <HabitForm onAdd={handleAdd} />
+
+      <div className="w-full max-w-lg mt-6">
+        <HabitStats habits={habits} />
+      </div>
 
       <div className="w-full max-w-lg mt-4">
         <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-md overflow-hidden">

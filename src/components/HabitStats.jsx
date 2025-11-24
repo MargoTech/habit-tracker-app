@@ -11,16 +11,15 @@ import { format, subDays, startOfDay, isSameDay, parseISO } from "date-fns";
 import { useHabits } from ".../hooks/useHabits";
 import { motion } from "framer-motion";
 
-const habitStats = () => {
+const HabitStats = () => {
   const { habits } = useHabits();
 
   const days = useMemo(() => {
     const arr = [];
     for (let i = 6; i >= 0; i--) {
-      const d = subDays(new Date(), i);
-      arr.push(startOfDay(d));
-      return arr;
+      arr.push(startOfDay(subDays(new Date(), i)));
     }
+    return arr;
   }, []);
 
   const weeklyData = useMemo(() => {
@@ -44,15 +43,33 @@ const habitStats = () => {
           } catch {
             dt = new Date(iso);
           }
-          for (let i = 0; i < counts.length; i++) {
-            if (isSameDay(counts[i].date, dt)) {
-              counts[i].count += 1;
-              break;
+          counts.forEach((c) => {
+            if (isSameDay(c.date, dt)) {
+              c.count += 1;
             }
-          }
+          });
         });
-        return;
       }
     });
+
+    return counts;
   }, [habits, days]);
+
+  return (
+    <motion.div>
+      <h2></h2>
+      <div>
+        <ResponsiveContainer>
+          <BarChart>
+            <XAxis />
+            <YAxis />
+            <Tooltip />
+            <Bar />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </motion.div>
+  );
 };
+
+export default HabitStats;
