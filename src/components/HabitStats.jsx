@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 import { format, subDays, startOfDay, isSameDay, parseISO } from "date-fns";
-import { useHabits } from ".../hooks/useHabits";
+import { useHabits } from "../hooks/useHabits";
 import { motion } from "framer-motion";
 
 const HabitStats = () => {
@@ -56,15 +56,19 @@ const HabitStats = () => {
   }, [habits, days]);
 
   return (
-    <motion.div>
-      <h2></h2>
-      <div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white dark:bg-gray-800 p-4 rounded-md shadow mt-6"
+    >
+      <h2 className="text-xl font-semibold mb-4">Weekly Activity</h2>
+      <div style={{ width: "100%", height: 220 }}>
         <ResponsiveContainer>
-          <BarChart>
-            <XAxis />
-            <YAxis />
+          <BarChart data={weeklyData}>
+            <XAxis dataKey="label" />
+            <YAxis allowDecimals={false} />
             <Tooltip />
-            <Bar />
+            <Bar dataKey="count" />
           </BarChart>
         </ResponsiveContainer>
       </div>
