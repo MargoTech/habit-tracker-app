@@ -50,6 +50,7 @@ export const useHabits = () => {
       await addDoc(habitsCollection, {
         title: title.trim(),
         completed: false,
+        history: [],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
@@ -65,16 +66,27 @@ export const useHabits = () => {
       if (!habit) return;
 
       const newStatus = !habit.completed;
+      const today = new Date().toISOString().split("T")[0];
+
+      const history = Array.isArray(habit.history) ? habit.history : [];
+
+      const newHistory = newStatus
+        ? [...history, today]
+        : history.filter((d) => d !== today);
+
       const prevHabits = [...habits];
 
       setHabits((prev) =>
-        prev.map((h) => (h.id === id ? { ...h, completed: newStatus } : h))
+        prev.map((h) =>
+          h.id === id ? { ...h, completed: newStatus, history: newHistory } : h
+        )
       );
 
       try {
         const habitRef = doc(db, "habits", id);
         await updateDoc(habitRef, {
           completed: newStatus,
+          history: newHistory,
           updatedAt: serverTimestamp(),
         });
       } catch (error) {

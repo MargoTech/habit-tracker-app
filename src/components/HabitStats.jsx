@@ -30,8 +30,8 @@ const HabitStats = () => {
     }));
 
     habits.forEach((habit) => {
-      if (Array.isArray(habit.completions) && habit.completions.length > 0) {
-        habit.completions.forEach((iso) => {
+      if (Array.isArray(habit.history) && habit.history.length > 0) {
+        habit.history.forEach((iso) => {
           let dt;
           try {
             dt =
@@ -67,8 +67,13 @@ const HabitStats = () => {
           <BarChart data={weeklyData}>
             <XAxis dataKey="label" />
             <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Bar dataKey="count" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--tw-bg-opacity)",
+                borderRadius: "0.5rem",
+              }}
+            />
+            <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
